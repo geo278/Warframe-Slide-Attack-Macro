@@ -43,22 +43,22 @@ void slideAttack() {
 	_VK_NUMPAD4_keyUp.ki.dwFlags = KEYEVENTF_KEYUP;
 
 	while (1) {
-		if (((GetKeyState(0x45) & 0x100) != 0) && enabled) {
+		if (((GetKeyState(0x33) & 0x100) != 0) && enabled) {
 
 			SendInput(1, &_VK_NUMPAD1_keyDown, sizeof(INPUT));
-			Sleep(10);
+			Sleep(5);
 			SendInput(1, &_VK_NUMPAD2_keyDown, sizeof(INPUT));
 			Sleep(10);
 			SendInput(1, &_VK_NUMPAD3_keyDown, sizeof(INPUT));
 			Sleep(20);
 			SendInput(1, &_VK_NUMPAD4_keyDown, sizeof(INPUT));
-			Sleep(20);
+			Sleep(15);
 			SendInput(1, &_VK_NUMPAD4_keyUp, sizeof(INPUT));
 			Sleep(10);
 			SendInput(1, &_VK_NUMPAD3_keyUp, sizeof(INPUT));
 			Sleep(10);
 			SendInput(1, &_VK_NUMPAD2_keyUp, sizeof(INPUT));
-			Sleep(10);
+			Sleep(5);
 			SendInput(1, &_VK_NUMPAD1_keyUp, sizeof(INPUT));
 		}
 
