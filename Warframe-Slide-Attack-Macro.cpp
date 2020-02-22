@@ -9,8 +9,7 @@ using namespace std;
 
 int screenWidth = GetSystemMetrics(SM_CXSCREEN);
 int screenHeight = GetSystemMetrics(SM_CYSCREEN);
-int width = 6;
-int height = 6;
+bool persistentLeftClickScan = false;
 bool enabled = true;
 
 void slideAttack() {
@@ -74,21 +73,30 @@ void trackEnabled() {
 			cout << "F1" << endl;
 			Sleep(500);
 		}
+		if ((GetKeyState(VK_F2) & 0x100) != 0) {
+			persistentLeftClickScan = !persistentLeftClickScan;
+			cout << "F2" << endl;
+			Sleep(500);
+		}
 		Sleep(1);
 	}
 }
-
-void trackResolution() {
+void stayOnline() {
 	while (1) {
-		screenWidth = GetSystemMetrics(SM_CXSCREEN);
-		screenHeight = GetSystemMetrics(SM_CYSCREEN);
-		if (screenWidth == 2048 && screenHeight == 1152) {
-			screenWidth = 2560;
-			screenHeight = 1440;
+		if (persistentLeftClickScan) {
+			mouse_event(MOUSEEVENTF_MOVE, -9000, -9000, 0, 0);
+			Sleep(50);
+			mouse_event(MOUSEEVENTF_MOVE, 550, 550, 0, 0);
+			Sleep(50);
+			mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0); // start left click
+			Sleep(50);
+			mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0); // finish Left click
+			Sleep(50);
 		}
-		Sleep(10000);
+		Sleep(20);
 	}
 }
+
 
 void recoilInput() {
 	while (1) {
@@ -99,8 +107,10 @@ void recoilInput() {
 }
 
 int main() {
-	CreateThread(0, 0, (LPTHREAD_START_ROUTINE)slideAttack, 0, 0, 0);
 	CreateThread(0, 0, (LPTHREAD_START_ROUTINE)trackEnabled, 0, 0, 0);
+	CreateThread(0, 0, (LPTHREAD_START_ROUTINE)slideAttack, 0, 0, 0);
+	CreateThread(0, 0, (LPTHREAD_START_ROUTINE)stayOnline, 0, 0, 0);
+
 	//CreateThread(0, 0, (LPTHREAD_START_ROUTINE)trackResolution, 0, 0, 0);
 	//CreateThread(0, 0, (LPTHREAD_START_ROUTINE)recoilInput, 0, 0, 0);
 	while (1) {
